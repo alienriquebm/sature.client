@@ -13,15 +13,17 @@ export default function ColorBox({ hex }: Props) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between bg-white shadow rounded p-4 text-center dark:bg-gray-700 dark:text-white dark:shadow-gray-800 hover:shadow-lg transition duration-200 ease-in-out">
+    <div className="flex flex-col w-full items-center justify-between bg-white shadow rounded text-center dark:bg-gray-700 dark:text-white dark:shadow-gray-800 hover:shadow-lg transition duration-200 ease-in-out sm:w-auto">
       <div
-        className="w-32 h-32 rounded mb-2"
+        className="w-full h-32 rounded-t sm:w-32 sm:rounded sm:mt-4 sm:mx-4 mb-2"
         style={{ backgroundColor: hex }}
       ></div>
-      <p className="font-mono text-lg mb-2">{hex}</p>
-      <Button onClick={handleCopy} size="small">
-        Copiar
-      </Button>
+      <div className="p-4">
+        <p className="font-mono text-lg mb-2">{hex}</p>
+        <Button onClick={handleCopy} size="small">
+          Copiar
+        </Button>
+      </div>
     </div>
   );
 }
