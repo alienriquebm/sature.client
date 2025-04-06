@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SavedPalettes from "../components/SavedPalettes.tsx";
+import ContentLayout from "../layouts/ContentLayout.astro";
+---
+
+<Layout>
+  <ContentLayout>
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-semibold mb-2">Tus paletas guardadas</h2>
+      <p class="text-gray-600 dark:text-gray-400">
+        Aquí están todas las combinaciones que decidiste salvar del caos
+        cromático.
+      </p>
+    </div>
+
+    <SavedPalettes client:only="react" />
+  </ContentLayout>
+</Layout>

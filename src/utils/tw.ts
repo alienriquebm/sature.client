@@ -1,0 +1,1 @@
+export const layoutContainer = 'max-w-6xl mx-auto';

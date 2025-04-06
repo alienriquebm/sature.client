@@ -1,0 +1,13 @@
+---
+import { cn } from "../utils/cn";
+import { layoutContainer } from "../utils/tw";
+---
+
+<div
+  class={cn(
+    "w-full min-h-[calc(100vh-128px)] flex flex-col items-center justify-center p-6",
+    layoutContainer
+  )}
+>
+  <slot />
+</div>
