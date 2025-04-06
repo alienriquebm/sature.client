@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import ColorBox from "./ColorBox";
+import Loader from "./ui/Loader";
 
 export default function SavedPalettes() {
-  const [palettes, setPalettes] = useState<string[][]>([]);
+  const [palettes, setPalettes] = useState<string[][] | null>(null);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("palettes") || "[]");
     setPalettes(saved);
   }, []);
+
+  if (palettes === null) {
+    return <Loader />;
+  }
 
   if (palettes.length === 0) {
     return (
