@@ -13,7 +13,7 @@ export default function ColorBox({ hex }: Props) {
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-between bg-white shadow rounded text-center dark:bg-gray-700 dark:text-white dark:shadow-gray-800 hover:shadow-lg transition duration-200 ease-in-out sm:w-auto">
+    <div className="flex flex-col w-full items-center justify-between bg-white shadow rounded text-center dark:bg-gray-700 dark:text-white dark:shadow-gray-500 hover:shadow-lg transition duration-200 ease-in-out sm:w-auto">
       <div
         className="w-full h-32 rounded-t sm:w-32 sm:rounded sm:mt-4 sm:mx-4 mb-2"
         style={{ backgroundColor: hex }}

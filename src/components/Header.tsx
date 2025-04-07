@@ -27,8 +27,8 @@ export default function Header() {
               className={cn(
                 "text-sm px-3 py-1 rounded transition flex items-center sm:gap-2",
                 currentPath === path
-                  ? "bg-gray-200 dark:bg-gray-800 font-semibold"
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-200 font-semibold dark:hover:bg-gray-500 dark:bg-gray-300 dark:text-gray-800"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-500"
               )}
             >
               <span>{icon}</span>
