@@ -1,4 +1,4 @@
-name: Deploy Saturé to Raspberry Pi
+name: Deploy Saturé to Raspberry via Tailscale
 
 on:
   push:
@@ -7,29 +7,40 @@ on:
 
 jobs:
   deploy:
+    name: Build and deploy to RaspberryPi
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Copiar código a Raspberry Pi
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install deps & build
+        run: |
+          corepack enable
+          pnpm install
+          pnpm build
+
+      - name: Copy project to Raspberry
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SATURE_SERVER_HOST }}
           username: ${{ secrets.SATURE_SERVER_USER }}
           key: ${{ secrets.SATURE_SSH_KEY }}
           source: "."
-          target: "/home/${{ secrets.SATURE_SERVER_USER }}/docker/dev-portfolio/sature"
+          target: "/home/alienriquebm/docker/dev-portfolio/sature"
           strip_components: 1
 
-      - name: Ejecutar docker-compose en Raspberry Pi
+      - name: Run docker compose on Raspberry
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SATURE_SERVER_HOST }}
           username: ${{ secrets.SATURE_SERVER_USER }}
           key: ${{ secrets.SATURE_SSH_KEY }}
           script: |
-            cd /home/${{ secrets.SATURE_SERVER_USER }}/docker/dev-portfolio/sature
-            docker compose down
+            cd /home/alienriquebm/docker/dev-portfolio/sature
             docker compose up -d --build
