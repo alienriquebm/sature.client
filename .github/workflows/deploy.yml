@@ -1,36 +1,19 @@
-name: Deploy to Raspberry Pi
+name: Deploy a Raspberry Pi
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-
+    name: Deploy on Raspberry Pi
+    runs-on: self-hosted # tu Pi es el runner
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTH_KEY }}
+      - name: Build and start container
+        run: docker compose -f /home/alienriquebm/docker/dev-portfolio/sature/docker-compose.yml up -d --build
 
-      - name: Build project
-        run: |
-          npm install
-          npm run build
-
-      - name: Copy files to Raspberry Pi
-        run: |
-          scp -o StrictHostKeyChecking=no -r ./dist alienriquebm@${{ secrets.TAILSCALE_RPI_IP }}:/home/alienriquebm/docker/dev-portfolio/sature
-
-      - name: Restart Docker container
-        run: |
-          ssh -o StrictHostKeyChecking=no alienriquebm@${{ secrets.TAILSCALE_RPI_IP }} << 'EOF'
-            cd /home/alienriquebm/docker/dev-portfolio/sature
-            docker compose down
-            docker compose up -d
-          EOF
+      - name: Prune unused images
+        run: docker image prune -af
