@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  sature:
+    build: .
+    container_name: sature
+    restart: unless-stopped
+    ports:
+      - "8888:80"  # Esto lo puedes cambiar si usas otro puerto para dev.alienriquebm.me
+    networks:
+      - devapps
+
+networks:
+  devapps:
+    external: true

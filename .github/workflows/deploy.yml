@@ -1,19 +1,21 @@
-name: Deploy a Raspberry Pi
+name: Deploy Saturé on Raspberry Pi
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
-    name: Deploy on Raspberry Pi
-    runs-on: self-hosted # tu Pi es el runner
+    runs-on: self-hosted
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Build and start container
-        run: docker compose -f /home/alienriquebm/docker/dev-portfolio/sature/docker-compose.yml up -d --build
+      - name: Build and deploy Docker container
+        run: |
+          docker compose up -d --build
 
-      - name: Prune unused images
+      - name: Cleanup old images
         run: docker image prune -af
