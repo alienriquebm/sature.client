@@ -1,0 +1,35 @@
+name: Deploy Saturé to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Copiar código a Raspberry Pi
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SATURE_SERVER_HOST }}
+          username: ${{ secrets.SATURE_SERVER_USER }}
+          key: ${{ secrets.SATURE_SSH_KEY }}
+          source: "."
+          target: "/home/${{ secrets.SATURE_SERVER_USER }}/docker/dev-portfolio/sature"
+          strip_components: 1
+
+      - name: Ejecutar docker-compose en Raspberry Pi
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SATURE_SERVER_HOST }}
+          username: ${{ secrets.SATURE_SERVER_USER }}
+          key: ${{ secrets.SATURE_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.SATURE_SERVER_USER }}/docker/dev-portfolio/sature
+            docker compose down
+            docker compose up -d --build
