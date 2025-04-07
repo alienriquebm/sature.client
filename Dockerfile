@@ -1,3 +1,13 @@
+# Etapa de construcción
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install && npm run build
+
+# Etapa final
 FROM nginx:stable-alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
