@@ -1,4 +1,4 @@
-name: Deploy Saturé to Raspberry via Tailscale
+name: Deploy to Raspberry Pi
 
 on:
   push:
@@ -7,40 +7,30 @@ on:
 
 jobs:
   deploy:
-    name: Build and deploy to RaspberryPi
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up PNPM
-        uses: pnpm/action-setup@v2
+      - name: Set up Tailscale
+        uses: tailscale/github-action@v3
         with:
-          version: 8
+          authkey: ${{ secrets.TAILSCALE_AUTH_KEY }}
 
-      - name: Install deps & build
+      - name: Build project
         run: |
-          corepack enable
-          pnpm install
-          pnpm build
+          npm install
+          npm run build
 
-      - name: Copy project to Raspberry
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SATURE_SERVER_HOST }}
-          username: ${{ secrets.SATURE_SERVER_USER }}
-          key: ${{ secrets.SATURE_SSH_KEY }}
-          source: "."
-          target: "/home/alienriquebm/docker/dev-portfolio/sature"
-          strip_components: 1
+      - name: Copy files to Raspberry Pi
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./dist alienriquebm@${{ secrets.TAILSCALE_RPI_IP }}:/home/alienriquebm/docker/dev-portfolio/sature
 
-      - name: Run docker compose on Raspberry
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SATURE_SERVER_HOST }}
-          username: ${{ secrets.SATURE_SERVER_USER }}
-          key: ${{ secrets.SATURE_SSH_KEY }}
-          script: |
+      - name: Restart Docker container
+        run: |
+          ssh -o StrictHostKeyChecking=no alienriquebm@${{ secrets.TAILSCALE_RPI_IP }} << 'EOF'
             cd /home/alienriquebm/docker/dev-portfolio/sature
-            docker compose up -d --build
+            docker compose down
+            docker compose up -d
+          EOF
