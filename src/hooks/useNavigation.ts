@@ -17,7 +17,14 @@ export default function useNavigation() {
     const [currentPath, setCurrentPath] = useState('/');
 
     useEffect(() => {
+      const handlePopState = () => {
+        setCurrentPath(window.location.pathname);
+      };
       setCurrentPath(window.location.pathname);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
     }, []);
   
     const handleNavigation = (path: string) => {
