@@ -1,4 +1,5 @@
 import useDarkMode from "../hooks/useDarkMode";
+import useNavigation from "../hooks/useNavigation";
 import { cn } from "../utils/cn";
 import { layoutContainer } from "../utils/tw";
 
@@ -7,6 +8,7 @@ const optionClasses =
 
 export default function Header() {
   const { mode, changeMode } = useDarkMode();
+  const { routes, currentPath } = useNavigation();
 
   return (
     <header className="w-full border-b border-gray-300 h-16 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800 text-black dark:text-white">
@@ -17,23 +19,40 @@ export default function Header() {
         )}
       >
         <h1 className="text-2xl font-bold tracking-tight">Saturé</h1>
-        <select
-          value={mode}
-          onChange={(e) =>
-            changeMode(e.target.value as "light" | "dark" | "auto")
-          }
-          className="text-sm bg-gray-800 dark:bg-white dark:text-gray-800 text-white px-3 py-1 rounded flex items-center justify-center"
-        >
-          <option value="light" className={optionClasses}>
-            ☀️ Claro
-          </option>
-          <option value="dark" className={optionClasses}>
-            🌙 Oscuro
-          </option>
-          <option value="auto" className={optionClasses}>
-            🌓 Automático
-          </option>
-        </select>
+        <div className="flex items-center gap-4">
+          {routes.map(({ path, label, icon }) => (
+            <a
+              key={path}
+              href={path}
+              className={cn(
+                "text-sm px-3 py-1 rounded transition flex items-center sm:gap-2",
+                currentPath === path
+                  ? "bg-gray-200 font-semibold dark:hover:bg-gray-500 dark:bg-gray-300 dark:text-gray-800"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-500"
+              )}
+            >
+              <span>{icon}</span>
+              <span className="hidden sm:inline">{label}</span>
+            </a>
+          ))}
+          <select
+            value={mode}
+            onChange={(e) =>
+              changeMode(e.target.value as "light" | "dark" | "auto")
+            }
+            className="text-sm bg-gray-800 dark:bg-white dark:text-gray-800 text-white px-3 py-1 rounded flex items-center justify-center"
+          >
+            <option value="light" className={optionClasses}>
+              ☀️ Claro
+            </option>
+            <option value="dark" className={optionClasses}>
+              🌙 Oscuro
+            </option>
+            <option value="auto" className={optionClasses}>
+              🌓 Automático
+            </option>
+          </select>
+        </div>
       </div>
     </header>
   );

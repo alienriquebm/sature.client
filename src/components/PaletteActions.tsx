@@ -25,14 +25,14 @@ export default function PaletteActions() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="flex flex-wrap justify-center gap-4">
+    <div className="flex flex-col w-full items-center gap-6">
+      <div className="flex w-full flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-4">
         {colors.map((hex, idx) => (
           <ColorBox key={idx} hex={hex} />
         ))}
       </div>
 
-      <div className="flex gap-4 mt-4">
+      <div className="w-full flex flex-col gap-4 mt-4 sm:flex-row justify-center">
         <Button onClick={regenerate}>🎲 Generar Nueva Paleta</Button>
         <Button onClick={savePalette} variant="secondary">
           💾 Guardar Paleta

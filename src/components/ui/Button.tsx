@@ -8,6 +8,7 @@ type ButtonProps = {
   children?: React.ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  fullWidth?: boolean;
 };
 
 export default function Button({
@@ -16,6 +17,7 @@ export default function Button({
   children,
   variant = "primary",
   size = "normal",
+  fullWidth = false,
 }: ButtonProps) {
   const variationsClasses = {
     primary:
@@ -41,6 +43,7 @@ export default function Button({
         variationsClasses[variant],
         sizeClasses[size],
         buttonClasses,
+        fullWidth && "w-full",
         className
       )}
     >
