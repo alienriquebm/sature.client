@@ -9,7 +9,6 @@ const optionClasses =
 export default function Header() {
   const { mode, changeMode } = useDarkMode();
   const { routes, currentPath } = useNavigation();
-
   return (
     <header className="w-full border-b border-gray-300 h-16 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800 text-black dark:text-white">
       <div

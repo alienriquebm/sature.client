@@ -1,41 +1,34 @@
 import { useEffect, useState } from "react";
 
-
 type Route = {
-    path: string;
-    label: string;
-    icon?: string;
-}
+  path: string;
+  label: string;
+  icon?: string;
+};
 
 const routes: Route[] = [
-    { path: '/', label: 'Inicio', icon:'🏠' },
-    { path: '/saved', label: 'Mis Paletas', icon: '💾' },
-]
+  { path: "/", label: "Inicio", icon: "🏠" },
+  { path: "/saved", label: "Mis Paletas", icon: "💾" },
+];
 
 export default function useNavigation() {
+  const [currentPath, setCurrentPath] = useState("/");
 
-    const [currentPath, setCurrentPath] = useState('/');
-
-    useEffect(() => {
-      const handlePopState = () => {
-        setCurrentPath(window.location.pathname);
-      };
-      setCurrentPath(window.location.pathname);
-      window.addEventListener('popstate', handlePopState);
-      return () => {
-        window.removeEventListener('popstate', handlePopState);
-      };
-    }, []);
-  
-    const handleNavigation = (path: string) => {
-      setCurrentPath(path);
-      window.history.pushState({}, '', path);
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(normalizePath(window.location.pathname));
     };
+    setCurrentPath(normalizePath(window.location.pathname));
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
-  return (
-    {
-        currentPath,
-        routes
-    }
-  )
+  const normalizePath = (path: string) => path.replace(/\/+$/, "");
+
+  return {
+    currentPath,
+    routes,
+  };
 }

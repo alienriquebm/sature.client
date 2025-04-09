@@ -18,7 +18,7 @@ import { Toaster } from "react-hot-toast";
   <body
     class="min-h-screen w-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white"
   >
-    <Header client:load />
+    <Header client:only="react" />
     <slot />
     <Footer />
     <Toaster
