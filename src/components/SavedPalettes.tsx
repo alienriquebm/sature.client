@@ -64,7 +64,7 @@ export default function SavedPalettes() {
         </div>
       ))}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
             <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
               ¿Eliminar paleta?
