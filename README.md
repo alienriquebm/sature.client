@@ -1,48 +1,89 @@
-# Astro Starter Kit: Basics
+# 🎨 Saturé
 
-```sh
-npm create astro@latest -- --template basics
+**Saturé** is a sleek color palette generator that lets you create, save, and manage color combinations effortlessly. Built with simplicity and speed in mind, it's the perfect tool for designers, developers, and anyone in need of color inspiration.
+
+## 🚀 Live Demo
+
+👉 [sature-dev.alienriquebm.me](https://sature-dev.alienriquebm.me)
+
+## 🧠 Tech Stack
+
+- ⚡️ [Astro](https://astro.build/) — Ultra-fast static site builder
+- 🎨 [Tailwind CSS v4](https://tailwindcss.com/) — Utility-first styling
+- ⚛️ React Hooks — For state and navigation logic
+- 💾 LocalStorage — Persist palettes without a backend
+- 🧪 [Vitest](https://vitest.dev/) + Testing Library — Unit testing with blazing speed
+- 📁 Path Aliases (`@/`) — For clean and manageable imports
+- 🐳 Docker + GitHub Actions — For automated deployment
+
+## 📸 Features
+
+- 🎲 Generate 5 random hex colors with a click
+- 🔍 View and copy hex codes
+- 💾 Save palettes to localStorage
+- 🗑 Delete saved palettes with confirmation modal
+- 🌗 Light and dark mode support
+- 🔀 Simple navigation between homepage and saved palettes
+
+## 🛠 Local Setup
+
+To run the project locally:
+
+```bash
+git clone https://github.com/your-username/sature.git
+cd sature
+npm install
+npm run dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+Access it at: `http://localhost:4321`
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 📦 Production Build
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run build
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+The static output will be in the /dist directory and can be served with any static file server.
 
-## 🧞 Commands
+## 🐳 Docker Deployment
 
-All commands are run from the root of the project, from a terminal:
+You can build and run the app in a Docker container using:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```bash
+docker build -t sature .
+docker run -p 8080:80 sature
+Then open http://localhost:8080 in your browser.
+```
 
-## 👀 Want to learn more?
+## 🧪 Running Tests
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This project uses Vitest for testing:
+
+```bash
+npm run test
+```
+
+Unit tests cover core components such as saving, rendering, and deleting palettes.
+
+## 📁 Project Structure
+
+```bash
+src/
+├── components/      # UI components like ColorBox, PaletteActions, etc.
+├── hooks/           # Custom React hooks
+├── pages/           # App pages: index, saved
+├── styles/          # Global styles and Tailwind config
+└── test/            # Vitest setup and test files
+```
+
+## 🧠 Technical Notes
+
+- This is a frontend-only project using localStorage for persistence
+
+- Authentication and backend functionality were intentionally omitted to focus on UX
+
+- Future iterations (e.g. Lumina) may explore backend integrations like Strapi or NestJS
+
+---
+Built with ❤️ by @alienriquebm
