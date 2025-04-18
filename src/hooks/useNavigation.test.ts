@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import useNavigation from "./useNavigation";
+import useNavigation from "@/hooks/useNavigation";
 
 describe("useNavigation", () => {
   it("should set the / path as the current path on mount", async () => {

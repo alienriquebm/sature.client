@@ -1,7 +1,7 @@
-import useDarkMode from "../hooks/useDarkMode";
-import useNavigation from "../hooks/useNavigation";
-import { cn } from "../utils/cn";
-import { layoutContainer } from "../utils/tw";
+import useDarkMode from "@/hooks/useDarkMode";
+import useNavigation from "@/hooks/useNavigation";
+import { cn } from "@/utils/cn";
+import { layoutContainer } from "@/utils/tw";
 
 const optionClasses =
   "flex items-center justify-center w-full h-full text-sm bg-black dark:bg-white dark:text-black text-white px-3 py-1 rounded";
