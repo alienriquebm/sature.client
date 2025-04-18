@@ -11,6 +11,9 @@ const routes: Route[] = [
   { path: "/saved", label: "Mis Paletas", icon: "💾" },
 ];
 
+const normalizePath = (path?: string) =>
+  path && path !== "/" ? path.replace(/\/+$/, "") : "/";
+
 export default function useNavigation() {
   const [currentPath, setCurrentPath] = useState("/");
 
@@ -24,8 +27,6 @@ export default function useNavigation() {
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
-
-  const normalizePath = (path: string) => path.replace(/\/+$/, "");
 
   return {
     currentPath,

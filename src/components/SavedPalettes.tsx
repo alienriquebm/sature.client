@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import ColorBox from "./ColorBox";
-import Loader from "./ui/Loader";
 import { TrashIcon } from "./icons";
 
 export default function SavedPalettes() {
-  const [palettes, setPalettes] = useState<string[][] | null>(null);
+  const [palettes, setPalettes] = useState<string[][]>([]);
   const [showModal, setShowModal] = useState(false);
   const [paletteToDelete, setPaletteToDelete] = useState<number | null>(null);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("palettes") || "[]");
-    setPalettes(saved);
+    const saved = localStorage.getItem("palettes");
+
+    if (saved === null) {
+      setPalettes([]);
+    } else {
+      setPalettes(JSON.parse(saved));
+    }
   }, []);
 
   const handleDeleteClick = (idx: number) => {
@@ -19,7 +23,6 @@ export default function SavedPalettes() {
   };
 
   const handleConfirmDelete = () => {
-    if (paletteToDelete === null || palettes === null) return;
     const newPalettes = palettes.filter((_, i) => i !== paletteToDelete);
     localStorage.setItem("palettes", JSON.stringify(newPalettes));
     setPalettes(newPalettes);
@@ -31,10 +34,6 @@ export default function SavedPalettes() {
     setShowModal(false);
     setPaletteToDelete(null);
   };
-
-  if (palettes === null) {
-    return <Loader />;
-  }
 
   if (palettes.length === 0) {
     return (
@@ -49,9 +48,12 @@ export default function SavedPalettes() {
       {palettes.map((palette, i) => (
         <div
           key={i}
+          role="presentation"
+          aria-label="Paleta de colores"
           className="group relative flex gap-4 flex-wrap border p-4 rounded shadow bg-white border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-700"
         >
           <button
+            aria-label="Eliminar paleta"
             type="button"
             onClick={() => handleDeleteClick(i)}
             className="absolute -right-6 -top-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -64,7 +66,10 @@ export default function SavedPalettes() {
         </div>
       ))}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          role="dialog"
+        >
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
             <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
               ¿Eliminar paleta?
@@ -75,6 +80,7 @@ export default function SavedPalettes() {
             </p>
             <div className="flex gap-4 justify-center">
               <button
+                aria-label="Confirmar eliminar paleta"
                 onClick={handleConfirmDelete}
                 className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
               >
@@ -82,6 +88,7 @@ export default function SavedPalettes() {
               </button>
               <button
                 onClick={handleCancel}
+                aria-label="Cancelar eliminar paleta"
                 className="px-4 py-2 rounded bg-gray-300 text-gray-800 hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition"
               >
                 Cancelar

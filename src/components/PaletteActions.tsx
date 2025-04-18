@@ -33,7 +33,9 @@ export default function PaletteActions() {
       </div>
 
       <div className="w-full flex flex-col gap-4 mt-4 sm:flex-row justify-center">
-        <Button onClick={regenerate}>🎲 Generar Nueva Paleta</Button>
+        <Button aria-label="Generar Nueva Paleta" onClick={regenerate}>
+          🎲 Generar Nueva Paleta
+        </Button>
         <Button onClick={savePalette} variant="secondary">
           💾 Guardar Paleta
         </Button>
