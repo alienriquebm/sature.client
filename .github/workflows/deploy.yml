@@ -1,4 +1,4 @@
-name: Deploy Saturé on Raspberry Pi
+name: Deploy Saturé via Cloudflare Tunnel
 
 on:
   push:
@@ -7,15 +7,50 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Build and deploy Docker container
-        run: |
-          docker compose up -d --build
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Cleanup old images
-        run: docker image prune -af
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install cloudflared
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
+
+      - name: Setup SSH config
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          cat >> ~/.ssh/config << EOL
+          Host alienriquebm-server
+            ProxyCommand cloudflared access ssh --hostname ssh.alienriquebm.me
+            User alienriquebm
+            IdentityFile ~/.ssh/deploy_key
+            StrictHostKeyChecking no
+          EOL
+
+      - name: Deploy files via SCP
+        run: |
+          scp -r dist/* alienriquebm-server:/home/alienriquebm/docker/nginx-proxy/projects/sature-dev/
+
+      - name: Restart Nginx
+        run: |
+          ssh alienriquebm-server "cd /home/alienriquebm/docker/nginx-proxy && docker compose restart"
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Visit: https://sature-dev.alienriquebm.me"
